@@ -1,0 +1,4 @@
+# We use pygame-ce (Community Edition) instead of classic pygame
+# as it offers better compatibility (including Python 3.14+) and performance.
+pygame-ce>=2.5.0
+

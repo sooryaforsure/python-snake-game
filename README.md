@@ -1,6 +1,7 @@
 # Snake Game 🐍
 
-![Gameplay Screenshot](screenshot.png)
+![Gameplay Screenshot](screenshot1.png)
+![Gameplay Screenshot](screenshot2.png)
 
 A polished, fully featured classic Snake Game built with Python and Pygame Community Edition (`pygame-ce`).
 

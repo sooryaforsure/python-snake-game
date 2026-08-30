@@ -1,9 +1,10 @@
 # Snake Game 🐍
 
-![Gameplay Screenshot](assets\s1.png)
-![Gameplay Screenshot](assets\apple.png)
-
 A polished, fully featured classic Snake Game built with Python and Pygame Community Edition (`pygame-ce`).
+
+### Gameplay Screenshots
+![Screenshot 1](assets/s1.png)
+![Screenshot 2](assets/s2.png)
 
 ## How to Play
 
@@ -38,4 +39,3 @@ This guarantees that movement takes the exact same amount of computing time rega
 
 **Hash Set for Collision:**
 We also maintain a `set` of the snake's currently occupied coordinates. This allows us to perform self-collision checks and find valid empty spaces for food spawns in **$O(1)$** average time, completely avoiding expensive linear scans.
-

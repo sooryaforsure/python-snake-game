@@ -352,16 +352,79 @@ def main():
         screen.blit(bg_surface, (0, 0))
 
         if game_state == "MENU":
-            title_text = title_font.render("SNAKE GAME", True, (0, 200, 80))
-            prompt_text = font.render("Press SPACE to Start", True, TEXT_COLOR)
+            # Darken background slightly more for menu
+            overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+            overlay.fill((0, 0, 0, 150))
+            screen.blit(overlay, (0, 0))
+
+            # Draw Title with Shadow
+            title_text = title_font.render("SNAKE GAME", True, (0, 255, 100))
+            shadow_text = title_font.render("SNAKE GAME", True, (0, 50, 20))
+            tx = SCREEN_WIDTH // 2 - title_text.get_width() // 2
+            ty = SCREEN_HEIGHT // 4 - 80
+            screen.blit(shadow_text, (tx + 4, ty + 4))
+            screen.blit(title_text, (tx, ty))
+
+            # Draw a cute snake icon above the panel
+            icon_y = ty + 85
+            pygame.draw.rect(screen, (0, 200, 80), (SCREEN_WIDTH // 2 - 15, icon_y, 30, 30), border_radius=8)
+            pygame.draw.rect(screen, (0, 160, 60), (SCREEN_WIDTH // 2 - 45, icon_y, 30, 30), border_radius=6)
+            pygame.draw.rect(screen, (0, 160, 60), (SCREEN_WIDTH // 2 - 45, icon_y + 30, 30, 30), border_radius=6)
+            pygame.draw.rect(screen, (0, 160, 60), (SCREEN_WIDTH // 2 - 15, icon_y + 30, 30, 30), border_radius=6)
+            pygame.draw.rect(screen, (0, 160, 60), (SCREEN_WIDTH // 2 + 15, icon_y + 30, 30, 30), border_radius=6)
             
-            screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, SCREEN_HEIGHT // 2 - 80))
+            # Snake Eyes
+            pygame.draw.circle(screen, (255, 255, 255), (SCREEN_WIDTH // 2 - 5, icon_y + 10), 4)
+            pygame.draw.circle(screen, (255, 255, 255), (SCREEN_WIDTH // 2 + 5, icon_y + 10), 4)
+            pygame.draw.circle(screen, (0, 0, 0), (SCREEN_WIDTH // 2 - 5, icon_y + 8), 2)
+            pygame.draw.circle(screen, (0, 0, 0), (SCREEN_WIDTH // 2 + 5, icon_y + 8), 2)
+            # Tongue
+            pygame.draw.line(screen, (255, 50, 50), (SCREEN_WIDTH // 2, icon_y - 2), (SCREEN_WIDTH // 2, icon_y - 12), 2)
+            pygame.draw.line(screen, (255, 50, 50), (SCREEN_WIDTH // 2, icon_y - 12), (SCREEN_WIDTH // 2 - 3, icon_y - 15), 2)
+            pygame.draw.line(screen, (255, 50, 50), (SCREEN_WIDTH // 2, icon_y - 12), (SCREEN_WIDTH // 2 + 3, icon_y - 15), 2)
             
+            # Panel for rules
+            panel_rect = pygame.Rect(SCREEN_WIDTH // 2 - 180, icon_y + 80, 360, 150)
+            pygame.draw.rect(screen, (40, 40, 40), panel_rect, border_radius=15)
+            pygame.draw.rect(screen, (80, 80, 80), panel_rect, width=3, border_radius=15)
+
+            # Legends
+            # Apple
+            screen.blit(img_apple, (panel_rect.x + 30, panel_rect.y + 20))
+            apple_desc = small_font.render("Apple: +1 Score", True, TEXT_COLOR)
+            screen.blit(apple_desc, (panel_rect.x + 70, panel_rect.y + 25))
+
+            # Golden Apple
+            screen.blit(img_golden, (panel_rect.x + 30, panel_rect.y + 60))
+            golden_desc = small_font.render("Golden: +3 Score & Speed Burst", True, (255, 215, 0))
+            screen.blit(golden_desc, (panel_rect.x + 70, panel_rect.y + 65))
+
+            # Ice Cube
+            screen.blit(img_ice, (panel_rect.x + 30, panel_rect.y + 100))
+            ice_desc = small_font.render("Ice Cube: Slows Time", True, (150, 200, 255))
+            screen.blit(ice_desc, (panel_rect.x + 70, panel_rect.y + 105))
+
+            # Controls
+            controls_text = small_font.render("Controls: Arrow Keys to Move", True, (180, 180, 180))
+            screen.blit(controls_text, (SCREEN_WIDTH // 2 - controls_text.get_width() // 2, panel_rect.bottom + 15))
+
             # Pulsing effect for the prompt text
-            alpha = int(abs(math.sin(pygame.time.get_ticks() * 0.003)) * 255)
+            prompt_text = font.render("Press SPACE to Start", True, (255, 255, 255))
+            alpha = int(abs(math.sin(pygame.time.get_ticks() * 0.004)) * 255)
             prompt_surf = prompt_text.copy()
             prompt_surf.set_alpha(alpha)
-            screen.blit(prompt_surf, (SCREEN_WIDTH // 2 - prompt_text.get_width() // 2, SCREEN_HEIGHT // 2 + 20))
+            
+            # Button BG for prompt
+            btn_bg = pygame.Rect(0, 0, prompt_text.get_width() + 40, prompt_text.get_height() + 20)
+            btn_bg.center = (SCREEN_WIDTH // 2, panel_rect.bottom + 75)
+            
+            # Pulse the button border/bg as well
+            bg_surf = pygame.Surface((btn_bg.width, btn_bg.height), pygame.SRCALPHA)
+            pygame.draw.rect(bg_surf, (0, 200, 80, max(50, alpha//2)), bg_surf.get_rect(), border_radius=10)
+            pygame.draw.rect(bg_surf, (0, 255, 100, alpha), bg_surf.get_rect(), width=2, border_radius=10)
+            
+            screen.blit(bg_surf, btn_bg.topleft)
+            screen.blit(prompt_surf, (btn_bg.centerx - prompt_text.get_width() // 2, btn_bg.centery - prompt_text.get_height() // 2))
             
         elif game_state in ["PLAYING", "PAUSED", "GAME_OVER"]:
             
